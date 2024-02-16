@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+
+<groupId>com.zycao</groupId>
+<artifactId>HW2_WordCount</artifactId>
+<version>1.0-SNAPSHOT</version>
+
+<properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hadoop.version>3.3.6</hadoop.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-hdfs-client</artifactId>
+        <version>3.3.6</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-common</artifactId>
+        <version>3.3.6</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-mapreduce-client-core</artifactId>
+        <version>3.3.6</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.1</version>
+        <type>maven-plugin</type>
+    </dependency>
+</dependencies>
+
+<!--<build>-->
+<!--    <plugins>-->
+<!--        <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-shade-plugin</artifactId>-->
+<!--            <version>3.5.1</version>-->
+<!--            <executions>-->
+<!--                <execution>-->
+<!--                    <id>combiner</id>-->
+<!--                    <phase>package</phase>-->
+<!--                    <goals>-->
+<!--                        <goal>shade</goal>-->
+<!--                    </goals>-->
+<!--                    <configuration>-->
+<!--                        <transformers>-->
+<!--                            <transformer-->
+<!--                                    implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>-->
+<!--                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                                <mainClass>SiCombinerRunner</mainClass>-->
+<!--                            </transformer>-->
+<!--                        </transformers>-->
+<!--                        <finalName>HW2_WordCount-combiner</finalName>-->
+<!--                    </configuration>-->
+<!--                </execution>-->
+
+<!--                <execution>-->
+<!--                    <id>no-combiner</id>-->
+<!--                    <phase>package</phase>-->
+<!--                    <goals>-->
+<!--                        <goal>shade</goal>-->
+<!--                    </goals>-->
+<!--                    <configuration>-->
+<!--                        <transformers>-->
+<!--                            <transformer-->
+<!--                                    implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>-->
+<!--                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                                <mainClass>NoCombinerRunner</mainClass>-->
+<!--                            </transformer>-->
+<!--                        </transformers>-->
+<!--                        <finalName>HW2_WordCount-no-combiner</finalName>-->
+<!--                    </configuration>-->
+<!--                </execution>-->
+
+<!--                <execution>-->
+<!--                    <id>per-map-tally</id>-->
+<!--                    <phase>package</phase>-->
+<!--                    <goals>-->
+<!--                        <goal>shade</goal>-->
+<!--                    </goals>-->
+<!--                    <configuration>-->
+<!--                        <transformers>-->
+<!--                            <transformer-->
+<!--                                    implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>-->
+<!--                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                                <mainClass>PerMapTallyRunner</mainClass>-->
+<!--                            </transformer>-->
+<!--                        </transformers>-->
+<!--                        <finalName>HW2_WordCount-per-map-tally</finalName>-->
+<!--                    </configuration>-->
+<!--                </execution>-->
+
+<!--                <execution>-->
+<!--                    <id>per-task-tally</id>-->
+<!--                    <phase>package</phase>-->
+<!--                    <goals>-->
+<!--                        <goal>shade</goal>-->
+<!--                    </goals>-->
+<!--                    <configuration>-->
+<!--                        <transformers>-->
+<!--                            <transformer-->
+<!--                                    implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>-->
+<!--                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                                <mainClass>PerTaskTallyRunner</mainClass>-->
+<!--                            </transformer>-->
+<!--                        </transformers>-->
+<!--                        <finalName>HW2_WordCount-per-task-tally</finalName>-->
+<!--                    </configuration>-->
+<!--                </execution>-->
+<!--            </executions>-->
+<!--        </plugin>-->
+<!--    </plugins>-->
+<!--</build>-->
+</project>
