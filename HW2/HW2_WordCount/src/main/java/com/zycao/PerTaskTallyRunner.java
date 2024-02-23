@@ -8,14 +8,13 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-
-public class NoCombinerRunner {
-
+public class PerTaskTallyRunner {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
-        job.setJarByClass(NoCombinerRunner.class);
-        job.setMapperClass(TokenizerMapper.class);
+        job.setJarByClass(PerTaskTallyRunner.class);
+        //--------Set PerTask Mapper class-------------//
+        job.setMapperClass(PerTaskTokenizerMapper.class);
         //--------Disable Combiner--------------
         //job.setCombinerClass(IntSumReducer.class);
 

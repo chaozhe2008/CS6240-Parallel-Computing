@@ -49,8 +49,6 @@ public class WordCount {
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
-//        conf.set("fs.defaultFS", "file:///");
-//        conf.set("mapreduce.framework.name", "local");
         Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(WordCount.class);
         job.setMapperClass(TokenizerMapper.class);
@@ -58,8 +56,8 @@ public class WordCount {
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job, new Path("input/"));
-        FileOutputFormat.setOutputPath(job, new Path("output/"));
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
