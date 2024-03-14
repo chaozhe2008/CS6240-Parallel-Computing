@@ -1,5 +1,6 @@
 package com.zycao.mapReduceTask;
 
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FlightReducer extends Reducer<Text, Text, Text, Text> {
+public class FlightReducer extends Reducer<Text, Text, IntWritable, Text> {
 
     private HashMap<String, List<String>> f1Flights = new HashMap<>();
     private List<String> f2Flights = new ArrayList<>();
@@ -38,13 +39,6 @@ public class FlightReducer extends Reducer<Text, Text, Text, Text> {
     }
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        // Print F1 flights
-        System.out.println("F1 Flights:");
-        f1Flights.forEach((key, value) -> System.out.println(key + " => " + value));
-
-        // Print F2 flights
-        System.out.println("F2 Flights:");
-        f2Flights.forEach(System.out::println);
 
         float totalDelaySum = 0;
         int validPairCount = 0;
@@ -71,12 +65,7 @@ public class FlightReducer extends Reducer<Text, Text, Text, Text> {
                 }
             }
         }
-        if (validPairCount > 0) {
-            float averageDelay = totalDelaySum / validPairCount;
-            context.write(new Text("Average Delay"), new Text(Float.toString(averageDelay)));
-        } else {
-            context.write(new Text("Average Delay"), new Text("No valid flight pairs found."));
-        }
+        context.write(new IntWritable(validPairCount), new Text(Float.toString(totalDelaySum)));
     }
 
 }

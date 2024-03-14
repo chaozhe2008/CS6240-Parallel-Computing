@@ -9,6 +9,7 @@ public class DataParser {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final LocalDate startDate = LocalDate.of(2007, 6, 1);
     private static final LocalDate endDate = LocalDate.of(2008, 5, 31);
+
     public static FlightRecord convertToFlightRecord(String[] parsed) {
 
         try {
