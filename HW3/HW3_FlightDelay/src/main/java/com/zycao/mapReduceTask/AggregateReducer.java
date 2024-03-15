@@ -9,6 +9,14 @@ public class AggregateReducer extends Reducer<Text, Text, Text, Text> {
     private long totalPairCount = 0;
     private float totalDelaySum = 0;
 
+    /**
+     * Phase2: collect outpus from all phase 1 reducers and calculate the final average delay
+     * @param key
+     * @param values
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         for (Text value : values) {

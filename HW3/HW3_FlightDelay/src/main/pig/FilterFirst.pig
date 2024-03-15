@@ -1,8 +1,8 @@
-REGISTER file:/usr/local/pig-0.17.0/lib/piggybank.jar;
+--REGISTER file:/usr/local/pig-0.17.0/lib/piggybank.jar;
 DEFINE CSVLoader org.apache.pig.piggybank.storage.CSVLoader();
 
 -- Load Data
-Data = LOAD '$input_path' USING CSVLoader();
+Data = LOAD 's3://zycao-cs6240/input/' USING CSVLoader();
 Flights = foreach Data generate
             $0 as year,
             $2 as month,
@@ -32,4 +32,4 @@ FilteredPairsByTime = FILTER JoinedFlights BY F1::arrTime < F2::depTime;
 SumDelays = FOREACH FilteredPairsByTime GENERATE F1::arrDelay + F2::arrDelay AS totalDelay;
 GroupAll = GROUP SumDelays ALL;
 AverageDelay = FOREACH GroupAll GENERATE AVG(SumDelays.totalDelay);
-STORE AverageDelay INTO '$output_path' USING PigStorage(',');
+STORE AverageDelay INTO 's3://zycao-cs6240/output/pig2' USING PigStorage(',');

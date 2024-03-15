@@ -5,16 +5,17 @@ import org.apache.hadoop.io.Text;
 
 public class MonthPartitioner extends Partitioner<Text, Text> {
 
+    /**
+     * Partition key/value pairs based on flight month
+     * @param key
+     * @param value
+     * @param numReduceTasks
+     * @return
+     */
     @Override
     public int getPartition(Text key, Text value, int numReduceTasks) {
-        String startDate = "2007-06-01";
-        String date = key.toString().split("/")[1];
-        return (convertToMonth(date) - convertToMonth(startDate)) % numReduceTasks;
+        int partition = Integer.valueOf(key.toString().split("/")[3]);
+        return partition % numReduceTasks;
     }
 
-    private int convertToMonth(String date) {
-        int yearNum = Integer.parseInt(date.substring(2, 4));
-        int monthNum = Integer.parseInt(date.substring(5, 7));
-        return 12 * yearNum + monthNum;
-    }
 }

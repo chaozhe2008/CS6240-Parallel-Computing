@@ -7,11 +7,7 @@ public class FlightRecord {
     private String year;
     private String month;
     private String flightDate;
-    private String origin;
-    private String dest;
-    private String depTime;
-    private String arrTime;
+    private String carrier;
     private String ArrDelay;
     private String cancelled;
-    private String diverted;
 }
