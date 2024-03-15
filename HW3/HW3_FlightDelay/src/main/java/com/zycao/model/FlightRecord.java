@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class FlightRecord {
+    private String year;
+    private String month;
     private String flightDate;
     private String origin;
     private String dest;

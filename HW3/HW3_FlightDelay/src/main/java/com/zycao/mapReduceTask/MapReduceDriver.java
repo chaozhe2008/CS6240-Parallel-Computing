@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 public class MapReduceDriver {
 
     public static void main(String[] args) throws Exception {
-
+        //---------------------Phase 1-------------------------
         Configuration conf1 = new Configuration();
         Job job1 = Job.getInstance(conf1, "phase1");
         job1.setJarByClass(MapReduceDriver.class);
@@ -25,6 +25,8 @@ public class MapReduceDriver {
         job1.setMapperClass(FlightMapper.class);
         job1.setReducerClass(FlightReducer.class);
         job1.setPartitionerClass(MonthPartitioner.class);
+
+        // Set Reducer Number
         job1.setNumReduceTasks(12);
 
         // Set the output key and value types
@@ -36,10 +38,13 @@ public class MapReduceDriver {
         job1.setOutputFormatClass(TextOutputFormat.class);
         job1.waitForCompletion(true);
 
+        //---------------------Phase 2-------------------------
+
         Configuration conf2 = new Configuration();
         Job job2 = Job.getInstance(conf2, "phase2");
         job2.setJarByClass(MapReduceDriver.class);
 
+        // Phase1 output path is Phase2 input path
         FileInputFormat.addInputPath(job2, new Path(args[1]));
         FileOutputFormat.setOutputPath(job2, new Path(args[2]));
 

@@ -13,6 +13,17 @@ public class FlightReducer extends Reducer<Text, Text, IntWritable, Text> {
     private HashMap<String, List<String>> f1Flights = new HashMap<>();
     private List<String> f2Flights = new ArrayList<>();
 
+    /**
+     * Gather flights depending on first flight or second flight.
+     * Put all F1 flights into a hashmap, key being data/otherAirport.
+     * Put all F2 flights into a list for iteration in cleanup phase.
+     * In the meantime, prune out unnecessary fields (year/month)
+     * @param key
+     * @param values
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         // Extracting the type, date, and intermediate airport from the key
@@ -37,10 +48,19 @@ public class FlightReducer extends Reducer<Text, Text, IntWritable, Text> {
             });
         }
     }
+
+    /**
+     * Iterate through all second flight, find potential first flight based on date/otherAirport
+     * Check the Arrival time and Departure time of two flights
+     * If they form a valid pair, accumulate total delay and pair counts
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
 
-        float totalDelaySum = 0;
+        float totalDelay = 0;
         int validPairCount = 0;
 
         for (String f2 : f2Flights) {
@@ -56,16 +76,15 @@ public class FlightReducer extends Reducer<Text, Text, IntWritable, Text> {
                     String f1Detail[] = f1.split("/");
                     String f1ArrTime = f1Detail[0];
                     String f1Delay = f1Detail[1];
-
+                    // A valid pair found, accumulate results
                     if (f1ArrTime.compareTo(f2DepTime) < 0) {
-                        float totalDelay = Float.parseFloat(f1Delay) + Float.parseFloat(f2Delay);
-                        totalDelaySum += totalDelay;
+                        totalDelay += (Float.parseFloat(f1Delay) + Float.parseFloat(f2Delay));
                         validPairCount++;
                     }
                 }
             }
         }
-        context.write(new IntWritable(validPairCount), new Text(Float.toString(totalDelaySum)));
+        context.write(new IntWritable(validPairCount), new Text(Float.toString(totalDelay)));
     }
 
 }
