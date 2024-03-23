@@ -2,7 +2,6 @@ package com.zycao.model;
 
 import lombok.Data;
 import org.apache.hadoop.io.WritableComparable;
-import org.apache.hadoop.io.WritableComparator;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;

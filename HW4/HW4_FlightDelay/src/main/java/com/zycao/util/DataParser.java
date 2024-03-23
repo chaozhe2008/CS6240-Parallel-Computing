@@ -20,10 +20,11 @@ public class DataParser {
             record.setMonth(parsed[2]);
             record.setFlightDate(parsed[5]);
             record.setCarrier(parsed[6]);
-            record.setArrDelay(parsed[37]);
+            record.setArrDelay(parsed[37].isEmpty() ? "0.00" : parsed[37]);
             record.setCancelled(parsed[41]);
             return record;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -35,30 +36,7 @@ public class DataParser {
      * @return
      */
     public static boolean isValid(FlightRecord record) {
-        return (record.getYear().equals("2008") && record.getCancelled().equals("0.00")
-                && (!record.getArrDelay().equals("") && !record.getFlightDate().equals(""));
+        return record.getYear().equals("2008") && record.getCancelled().equals("0.00")
+                && !record.getArrDelay().equals("") && !record.getFlightDate().equals("");
     }
-
-    /**
-     * utility function to format values for phase 1 mapper output
-     * @param type
-     * @param record
-     * @return
-     */
-//    public static String convertToStringValue(String type, FlightRecord record) {
-//        StringBuilder sb = new StringBuilder();
-//        if (type.equals("F1")){
-//            sb.append(record.getFlightDate()).append("/");
-//            sb.append(record.getDest()).append("/");
-//            sb.append(record.getArrTime()).append("/");
-//            sb.append(record.getArrDelay());
-//        } else {
-//            sb.append(record.getFlightDate()).append("/");
-//            sb.append(record.getOrigin()).append("/");
-//            sb.append(record.getDepTime()).append("/");
-//            sb.append(record.getArrDelay());
-//        }
-//
-//        return sb.toString();
-//    }
 }
