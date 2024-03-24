@@ -9,6 +9,14 @@ import java.io.IOException;
 
 public class FlightReducer extends Reducer<CompositeKey, FloatWritable, Text, Text> {
 
+    /**
+     * in each reduce call, handle the accumulation and calculation for one unique carrier
+     * @param key
+     * @param values
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     public void reduce(CompositeKey key, Iterable<FloatWritable> values, Context context) throws IOException, InterruptedException {
         float totalDelay = 0;
@@ -17,11 +25,13 @@ public class FlightReducer extends Reducer<CompositeKey, FloatWritable, Text, Te
         Text outputKey = new Text(key.getCarrier());
         StringBuilder monthlyAverages = new StringBuilder();
 
+        // GroupingComparator guarantees all values belong to same carrier
+        // Since the month is in sorted order, we can accumulate the result in its original order
         for (FloatWritable val : values) {
             if (key.getMonth() == currentMonth) {
                 totalDelay += val.get();
                 totalFlights++;
-            } else { //new month
+            } else { // encounter a new month, log the previous month pair
                 if (totalFlights > 0){
                     monthlyAverages.append(buildOutputPair(currentMonth, totalFlights, totalDelay)).append(", ");
                 }

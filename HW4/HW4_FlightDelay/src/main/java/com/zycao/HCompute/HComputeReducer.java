@@ -10,9 +10,15 @@ import java.util.Map;
 
 public class HComputeReducer extends Reducer<Text, FloatWritable, Text, Text> {
     private Map<String, float[][]> carrierMonthData = new HashMap<>();
+
+    /**
+     * parse and store delay data into a hashmap
+     * @param key
+     * @param values
+     * @param context
+     */
     @Override
     protected void reduce(Text key, Iterable<FloatWritable> values, Context context) {
-        System.out.println("reducer called");
         String[] parts = key.toString().split("_");
         String carrier = parts[0];
         int month = Integer.parseInt(parts[1]) - 1; // Convert month to 0-based index
@@ -24,6 +30,12 @@ public class HComputeReducer extends Reducer<Text, FloatWritable, Text, Text> {
         }
     }
 
+    /**
+     * After all data has been accumulated, calculate the average and write to output
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         for (Map.Entry<String, float[][]> entry : carrierMonthData.entrySet()) {

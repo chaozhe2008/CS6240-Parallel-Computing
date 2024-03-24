@@ -16,7 +16,6 @@ public class FlightMapper extends Mapper<LongWritable, Text, CompositeKey, Float
 
     /**
      * Set up a csvParser for mapper function
-     *
      * @param context
      * @throws IOException
      * @throws InterruptedException
@@ -28,9 +27,7 @@ public class FlightMapper extends Mapper<LongWritable, Text, CompositeKey, Float
     }
 
     /**
-     * Perform filter on rows and classification based on start/end airport
-     * Eliminate redundant fields
-     *
+     * read from each line, build compositeKey - Delay pairs
      * @param key
      * @param value
      * @param context

@@ -30,6 +30,11 @@ public class CompositeKey implements WritableComparable<CompositeKey> {
         this.month = in.readInt();
     }
 
+    /**
+     * Overrided comparator, sort by month (increasing order)
+     * @param o the object to be compared.
+     * @return
+     */
     @Override
     public int compareTo(CompositeKey o) {
         int result = this.carrier.compareTo(o.carrier);

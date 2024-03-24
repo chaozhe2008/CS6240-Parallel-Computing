@@ -6,6 +6,10 @@ import org.apache.hadoop.mapreduce.Partitioner;
 
 import java.util.HashMap;
 
+
+/**
+ * A customized partitioiner to distribute tasks (carriers) evenly
+ */
 public class FlightPartitioner extends Partitioner<CompositeKey, FloatWritable> {
     private static final HashMap<String, Integer> airlineToPartitionMap = new HashMap<>();
     static {

@@ -2,6 +2,9 @@ package com.zycao.model;
 
 import lombok.Data;
 
+/**
+ * an object representing a flight record
+ */
 @Data
 public class FlightRecord {
     private String year;

@@ -18,16 +18,21 @@ import java.io.File;
 
 public class HComputeDriver {
     public static void main(String[] args) throws Exception {
+        // For EMR run
         Configuration conf = HBaseConfiguration.create();
         String hbaseSite="/etc/hbase/conf/hbase-site.xml";
         conf.addResource(new File(hbaseSite).toURI().toURL());
+
         Job job = Job.getInstance(conf, "HCompute");
         job.setJarByClass(HComputeDriver.class);
         Scan scan = new Scan();
+
+        //Set scan range
         scan.setStartRow(Bytes.toBytes("2008_"));
         scan.setStopRow(Bytes.toBytes("2009_"));
         scan.addColumn(Bytes.toBytes("family1"), Bytes.toBytes("arrDelay"));
 
+        // Filter out cancelled flights
         SingleColumnValueFilter filterCancelled = new SingleColumnValueFilter(
                 Bytes.toBytes("family1"),
                 Bytes.toBytes("cancelled"),

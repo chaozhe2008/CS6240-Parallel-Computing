@@ -14,15 +14,19 @@ import java.io.File;
 
 public class HPopulateDriver {
     public static void main(String[] args) throws Exception {
+        // For EMR run
         Configuration conf = HBaseConfiguration.create();
         String hbaseSite="/etc/hbase/conf/hbase-site.xml";
         conf.addResource(new File(hbaseSite).toURI().toURL());
+
         Job job = Job.getInstance(conf, "HPopulate");
         job.setJarByClass(HPopulateDriver.class);
         job.setMapperClass(HPopulateMapper.class);
         job.setMapOutputKeyClass(ImmutableBytesWritable.class);
         job.setOutputValueClass(Put.class);
         job.setOutputFormatClass(TableOutputFormat.class);
+
+        // set output class as TableOutputFormat, no need for reducer
         job.setNumReduceTasks(0);
         job.getConfiguration().set(TableOutputFormat.OUTPUT_TABLE, args[1]);
         FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -33,6 +37,8 @@ public class HPopulateDriver {
             if (!admin.tableExists(tableName)) {
                 TableDescriptorBuilder tableDescriptorBuilder = TableDescriptorBuilder.newBuilder(tableName)
                         .setColumnFamily(ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes("family1")).build());
+
+                // Split table into 3 regions, ensuring all data in year 2008 in the same region
                 byte[][] splitKeys = {Bytes.toBytes("2008_"), Bytes.toBytes("2009_")};
                 admin.createTable(tableDescriptorBuilder.build(), splitKeys);
                 System.out.println("Created table " + tableName);

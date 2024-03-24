@@ -19,13 +19,13 @@ public class HPopulateMapper extends Mapper<LongWritable, Text, ImmutableBytesWr
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        String[] parsed = csvParser.parseLine(value.toString());
+        String[] parsed = csvParser.parseLine(value.toString()); // parse each row into a flight object
         FlightRecord record = DataParser.convertToFlightRecord(parsed);
 
         if (record != null) {
             String uuid = UUID.randomUUID().toString();
             String rowKeyStr = record.getYear() + "_" + record.getCarrier() + "_" + record.getMonth() + "_" + uuid;
-            System.out.println(rowKeyStr);
+            // rowKey format: year + carrier + month + uuid (adding uuid to make row key unique)
             ImmutableBytesWritable rowKey = new ImmutableBytesWritable(Bytes.toBytes(rowKeyStr));
 
             Put put = new Put(rowKey.get());
